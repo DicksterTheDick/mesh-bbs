@@ -1,4 +1,4 @@
-📡 Meshtastic BBS Auto Responder
+📡 Mesh-BBS
 
 This is a Python-based Bulletin Board System (BBS) designed to run on a computer (like a Linux PC or Raspberry Pi) connected to a Meshtastic node. It acts as an automated service, routing commands received over the mesh (like reading messages or playing games) and responding to the user.
 
@@ -12,9 +12,9 @@ Persistent Message Board: Users can post and read messages across several catego
 
 Consistent Navigation: All major menu exits use dedicated commands (M for Main, B for Board) for a seamless user experience.
 
-Chunking Logic: Automatically splits long replies (like full message bodies or game boards) into Meshtastic-safe packets (max ~190 chars) and handles multi-part posts from users.
+Chunking Logic: Automatically splits long replies (like full message bodies or game boards) into Meshtastic-safe packets and handles multi-part posts from users.
 
-Games Center: Includes simple, turn-based games like Blackjack and Minesweeper.
+Games Center: Includes simple, turn-based games like Blackjack.
 
 ⚙️ Installation and Setup
 
@@ -45,7 +45,7 @@ You MUST activate this environment every time you want to run or install depende
 source .venv/bin/activate
 
 
-(Your command prompt should now show (.venv) at the beginning, e.g., (.venv) dickster@...)
+(Your command prompt should now show (.venv) at the beginning, e.g., (.venv) pi@raspberrypi...)
 
 5. Installing Dependencies
 
@@ -79,20 +79,20 @@ Using nano, create a new service file:
 sudo nano /etc/systemd/system/meshbbs.service
 
 
-Paste the following content, making sure to replace the placeholder path and username with your actual absolute path and username (e.g., dickster):
+Paste the following content, making sure to replace the placeholder path and username with the typical Raspberry Pi user pi:
 
 [Unit]
 Description=Meshtastic BBS Auto Responder
 After=network.target
 
 [Service]
-# IMPORTANT: Replace /home/dickster/mesh-bbs with the absolute path to your project folder.
-WorkingDirectory=/home/dickster/mesh-bbs
-# IMPORTANT: Replace dickster with your actual Linux username.
-User=dickster 
-Group=dickster
+# IMPORTANT: This path assumes the project is cloned into the home directory of the 'pi' user.
+WorkingDirectory=/home/pi/mesh-bbs
+# IMPORTANT: The user executing the script should be the 'pi' user.
+User=pi 
+Group=pi
 # Full path to the Python executable INSIDE your virtual environment.
-ExecStart=/home/dickster/mesh-bbs/.venv/bin/python3 auto_responder.py
+ExecStart=/home/pi/mesh-bbs/.venv/bin/python3 auto_responder.py
 Restart=always
 
 [Install]
