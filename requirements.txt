@@ -1,0 +1,4 @@
+meshtastic>=2.2.0
+pubsub>=4.0.0
+pyserial
+pydantic
