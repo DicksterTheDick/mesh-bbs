@@ -1,4 +1,5 @@
-# auto_responder.py (FINAL VERIFIED - Games Center with Blackjack & Minesweeper)
+# auto_responder.py
+# Copyright (c) 2025 DicksterTheDick. Licensed under the MIT License.
 
 # -*- coding: utf-8 -*-
 import meshtastic.serial_interface
