@@ -1,86 +1,111 @@
-📡 Mesh-BBS
+# 📡 Mesh-BBS
 
-This is a Python-based Bulletin Board System (BBS) designed to run on a computer (like a Linux PC or Raspberry Pi) connected to a Meshtastic node. It acts as an automated service, routing commands received over the mesh (like reading messages or playing games) and responding to the user.
+**Mesh-BBS** is a Python-based Bulletin Board System (BBS) designed to run on a computer (like a Linux PC or Raspberry Pi) connected to a **Meshtastic** node.  
+It acts as an automated service, routing commands received over the mesh (like reading messages or playing games) and responding to users.
 
-The system is designed to use low-bandwidth, multi-packet text messages to deliver a full, interactive, menu-driven experience.
+The system uses **low-bandwidth, multi-packet text messages** to deliver a full, interactive, menu-driven experience.
 
-✨ Features
+---
 
-Menu-Driven Navigation: Uses single-letter commands (B, R, P, M, G, X) to navigate the system.
+## ✨ Features
 
-Persistent Message Board: Users can post and read messages across several categorized topics (General, News, Tech, etc.).
+- **Menu-Driven Navigation** — Single-letter commands (`B`, `R`, `P`, `M`, `G`, `X`) make system navigation simple and intuitive.  
+- **Persistent Message Board** — Users can post and read messages across multiple categories (`General`, `News`, `Tech`, etc.).  
+- **Consistent Navigation** — Standardized menu exits (`M` for Main, `B` for Board) ensure a seamless experience.  
+- **Chunking Logic** — Automatically splits long replies (like message bodies or game states) into **Meshtastic-safe packets**, and handles multi-part posts.  
+- **Games Center** — Includes fun, turn-based games like **Blackjack**.
 
-Consistent Navigation: All major menu exits use dedicated commands (M for Main, B for Board) for a seamless user experience.
+---
 
-Chunking Logic: Automatically splits long replies (like full message bodies or game boards) into Meshtastic-safe packets and handles multi-part posts from users.
+## ⚙️ Installation & Setup
 
-Games Center: Includes simple, turn-based games like Blackjack.
+### 1. Prerequisites
 
-⚙️ Installation and Setup
+You must have **Python 3.9+** and **Git** installed on your system.
 
-1. Prerequisites
+---
 
-You must have Python 3.9 or higher and Git installed on your system.
+### 2. Project Setup
 
-2. Project Setup
+Clone or navigate to your project folder:
 
-Navigate to your project folder (~/mesh-bbs):
-
+```bash
 cd ~/mesh-bbs
+```
 
+---
 
-3. Creating a Python Virtual Environment (venv)
+### 3. Create a Python Virtual Environment
 
-It is highly recommended to run this script within a virtual environment (venv) to isolate its dependencies (meshtastic, pyserial, etc.) from your system's global Python packages.
+Running this script inside a virtual environment (`venv`) isolates dependencies (like `meshtastic`, `pyserial`, etc.) from system-wide packages.
 
-To Create the Environment:
+Create the environment:
 
+```bash
 python3 -m venv .venv
+```
 
+---
 
-4. Activating the Virtual Environment
+### 4. Activate the Virtual Environment
 
-You MUST activate this environment every time you want to run or install dependencies for the script.
+Activate it **every time** before running or installing dependencies:
 
+```bash
 source .venv/bin/activate
+```
 
+Your prompt should now look like this:
 
-(Your command prompt should now show (.venv) at the beginning, e.g., (.venv) pi@raspberrypi...)
+```bash
+(.venv) pi@raspberrypi:~$
+```
 
-5. Installing Dependencies
+---
 
-The requirements.txt file lists all necessary Python libraries.
+### 5. Install Dependencies
 
-With the virtual environment activated, install the required packages using pip:
+With the virtual environment active, install the required packages:
 
+```bash
 pip install -r requirements.txt
+```
 
+---
 
-6. Running the BBS (Manual Start)
+### 6. Run the BBS (Manual Start)
 
-Ensure your Meshtastic device is plugged in via USB and is powered on. Then, run the main script:
+Make sure your **Meshtastic device** is connected via USB and powered on, then run:
 
+```bash
 python3 auto_responder.py
+```
 
+To enable verbose debug output (for troubleshooting):
 
-To see verbose debug information (useful for troubleshooting connection issues), run:
-
+```bash
 python3 auto_responder.py --debug
+```
 
+---
 
-🔄 Optional: Running the Script Automatically at Boot
+## 🔄 Optional: Run Automatically at Boot
 
-If deploying on a headless device (like a Raspberry Pi) that won't have a monitor or keyboard, you can use a systemd service to ensure the script starts automatically after a reboot.
+If deploying on a **headless device** (like a Raspberry Pi without monitor/keyboard), use `systemd` to automatically start the script on boot.
 
-1. Create the Service File
+---
 
-Using nano, create a new service file:
+### 1. Create the Service File
 
+Open the service configuration file using `nano`:
+
+```bash
 sudo nano /etc/systemd/system/meshbbs.service
+```
 
+Paste the following **exact content** (make sure paths and usernames match your setup):
 
-Paste the following content, making sure to replace the placeholder path and username with the typical Raspberry Pi user pi:
-
+```ini
 [Unit]
 Description=Meshtastic BBS Auto Responder
 After=network.target
@@ -89,7 +114,7 @@ After=network.target
 # IMPORTANT: This path assumes the project is cloned into the home directory of the 'pi' user.
 WorkingDirectory=/home/pi/mesh-bbs
 # IMPORTANT: The user executing the script should be the 'pi' user.
-User=pi 
+User=pi
 Group=pi
 # Full path to the Python executable INSIDE your virtual environment.
 ExecStart=/home/pi/mesh-bbs/.venv/bin/python3 auto_responder.py
@@ -97,33 +122,45 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+```
 
+Save and close with:
+```
+CTRL + O, Enter, CTRL + X
+```
 
-Save and close the file (Ctrl+O, Enter, Ctrl+X).
+---
 
-2. Enable and Start the Service
+### 2. Enable and Start the Service
 
-Run the following commands to tell systemd about the new service and start it immediately:
+Reload systemd and enable the service:
 
-# Reload the systemd manager configuration
+```bash
 sudo systemctl daemon-reload
-
-# Enable the service to start automatically on boot
 sudo systemctl enable meshbbs.service
-
-# Start the service now
 sudo systemctl start meshbbs.service
+```
 
+---
 
-3. Check Status
+### 3. Check Service Status
 
-To verify the script is running correctly:
+Verify the service is running:
 
+```bash
 sudo systemctl status meshbbs.service
+```
 
+You should see something like:
 
-(The status should show "active (running)")
+```
+Active: active (running)
+```
 
-📝 License
+---
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+## 📝 License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](LICENSE) file for details.
+
