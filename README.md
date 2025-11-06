@@ -23,15 +23,29 @@ The system uses **low-bandwidth, multi-packet text messages** to deliver a full,
 
 You must have **Python 3.9+** and **Git** installed on your system.
 
+If Git is not installed, install it using:
+
+```bash
+sudo apt install git -y
+```
+
 ---
 
 ### 2. Project Setup
 
-Clone or navigate to your project folder:
+First, **clone the repository** from GitHub to your local machine:
+
+```bash
+git clone https://github.com/DicksterTheDick/mesh-bbs.git
+```
+
+Then, navigate into the project directory:
 
 ```bash
 cd ~/mesh-bbs
 ```
+
+> 💡 *If you’ve already cloned the project before, you can simply navigate to it with the `cd` command instead of cloning again.*
 
 ---
 
